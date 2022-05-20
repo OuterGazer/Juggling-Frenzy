@@ -223,11 +223,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.3
+      value: 4.8
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.74
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -261,13 +261,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
+      propertyPath: impulseForceAmount
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850303, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_Mass
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850303, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LinearDrag
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850303, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_UseAutoMass
