@@ -6,6 +6,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     [SerializeField] float impulseForceAmount = default;
+    [SerializeField] Transform referencePoint;
 
     private Rigidbody2D ballRB;
     private int screenHeight;
@@ -28,8 +29,16 @@ public class Ball : MonoBehaviour
         // This is to have the upper deadpoint be always at roughly the same height to avoid ball flying off the screen.
         float forceFactor = (1 - (Input.mousePosition.y / this.screenHeight)) * this.impulseForceAmount;
 
-        // We eliminate all velocity to manipulate the ball better and then apply the upwards force.
+        // We eliminate all velocity to manipulate the ball better.
         this.ballRB.velocity = Vector2.zero;
-        this.ballRB.AddForce(Vector2.up * forceFactor, ForceMode2D.Impulse);
+
+        // We calculate the vector towards the reference point, so the ball goes up slightly to one side depending on where exactly on the ball the player clicked.
+
+        Vector2 clickPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        Vector2 ballReferencePos = new Vector2(this.referencePoint.position.x, this.referencePoint.position.y);
+
+        Vector2 upwardsDir = (ballReferencePos - clickPos).normalized;
+
+        this.ballRB.AddForce(upwardsDir * forceFactor, ForceMode2D.Impulse);
     }
 }
