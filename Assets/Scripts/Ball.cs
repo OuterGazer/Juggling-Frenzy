@@ -11,14 +11,19 @@ public class Ball : MonoBehaviour
     [SerializeField] float impulseForceAmount = default;
     [Tooltip("This is the childed reference point used to calculate the sideways moving. The closer it is to the ball, the more the ball will move towards the sides upon click.")]
     [SerializeField] Transform referencePoint;
-    [Tooltip("Normal drag applies in X and Y, this drag is used to exclusively dampen movement in Y so the ball moves naturally to the sides.")]
-    [SerializeField] float verticalDrag = default;
+    [Tooltip("Normal drag applies in X and Y, this drag is used to exclusively dampen movement in +Y so the ball moves naturally to the sides.")]
+    [SerializeField] float upwardsVerticalDrag = default;
+    [Tooltip("Normal drag applies in X and Y, this drag is used to exclusively dampen movement in -Y so the ball moves naturally to the sides.")]
+    [SerializeField] float downwardsVerticalDrag = default;
     [Tooltip("This is the speed in which upwards drag is increased as the ball falls to dampen it's downwards velocity")]
-    [SerializeField] float dragApplicationSpeedFactor = default;
+    [SerializeField] float upwardsDragApplicationSpeedFactor = default;
+    [Tooltip("This is the speed in which downwards drag is increased as the ball goes up to dampen it's upwards velocity")]
+    [SerializeField] float downwardsDragApplicationSpeedFactor = default;
 
     private Rigidbody2D ballRB;
     private int screenHeight;
-    private float maxVertDrag;
+    private float maxUpVertDrag;
+    private float maxDownVertDrag;
 
     private bool hasGameStarted = false;
     private bool isBallFalling = false;
@@ -32,9 +37,12 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         this.screenHeight = Screen.height;
-        this.maxVertDrag = this.verticalDrag;
 
-        //this.ballRB.AddForce(Vector2.up * this.impulseForceAmount, ForceMode2D.Impulse);
+        this.maxUpVertDrag = this.upwardsVerticalDrag;
+        this.maxDownVertDrag = this.downwardsVerticalDrag;
+
+        // We initialize it at 0.0f, so he ball doesn't weirdly stop on top deadpoint after very first click.
+        this.downwardsVerticalDrag = 0.0f;
     }
 
     private void Update()
@@ -48,6 +56,21 @@ public class Ball : MonoBehaviour
 
         ChangeDragOnBallVelocityDirection();
     }
+    
+
+    private void FixedUpdate()
+    {
+        // Regular drag applies in all directions and prevents lateral moving of the ball
+        // Here I will apply a constant vertical drag contrary to the ball's current velocity direction
+        if(Mathf.Sign(this.ballRB.velocity.y) == +1)
+        {
+            this.ballRB.AddForce(-Vector2.up * this.upwardsVerticalDrag, ForceMode2D.Force);
+        }
+        else
+        {
+            this.ballRB.AddForce(Vector2.up * this.downwardsVerticalDrag, ForceMode2D.Force);
+        }
+    }
 
     private void KeepBallInScreenCenter()
     {
@@ -55,33 +78,33 @@ public class Ball : MonoBehaviour
                                                          Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height / 2, 0)).y);
     }
 
-    private void FixedUpdate()
-    {
-        // Regular drag applies in all directions and prevents lateral moving of the ball
-        // Here I will apply a constant vertical drag contrary to the ball's current velocity direction
-        this.ballRB.AddForce(-Vector2.up * Mathf.Sign(this.ballRB.velocity.y) * this.verticalDrag, ForceMode2D.Force);
-    }
-
     private void ChangeDragOnBallVelocityDirection()
     {
-        
-
         if (this.ballRB.velocity.y <= 0 && !this.isBallFalling)
         {
-            this.verticalDrag = 0.0f;
+            this.upwardsVerticalDrag = 0.0f;
+            //this.downwardsVerticalDrag = 0.0f;
             this.isBallFalling = true;
         }
         else if (this.ballRB.velocity.y < 0)
         {
-            if (this.verticalDrag < this.maxVertDrag)
+            if (this.upwardsVerticalDrag < this.maxUpVertDrag)
             {
-                this.verticalDrag += Time.deltaTime * this.dragApplicationSpeedFactor;
+                this.upwardsVerticalDrag += Time.deltaTime * this.upwardsDragApplicationSpeedFactor;
             }
         }
         else if (this.ballRB.velocity.y >= 0 && this.isBallFalling)
         {
-            this.verticalDrag = this.maxVertDrag;
+            this.downwardsVerticalDrag = 0.0f;
+            //this.upwardsVerticalDrag = 0.0f;
             this.isBallFalling = false;
+        }
+        else if (this.ballRB.velocity.y > 0)
+        {
+            if (this.downwardsVerticalDrag < this.maxDownVertDrag)
+            {
+                this.downwardsVerticalDrag += Time.deltaTime * this.downwardsDragApplicationSpeedFactor;
+            }
         }
     }
 

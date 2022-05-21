@@ -215,7 +215,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1257476766, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850298, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_Name
@@ -224,18 +224,6 @@ PrefabInstance:
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -278,20 +266,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: verticalDrag
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: impulseForceAmount
-      value: 16
+      value: 14.7
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: dragApplicationSpeedFactor
-      value: 6
+      propertyPath: upwardsVerticalDrag
+      value: 4.25
       objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850303, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_LinearDrag
-      value: 0
+    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
+      propertyPath: downwardsVerticalDrag
+      value: 4.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
+      propertyPath: upwardsDragApplicationSpeedFactor
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
+      propertyPath: downwardsDragApplicationSpeedFactor
+      value: 5.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
