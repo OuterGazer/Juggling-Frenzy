@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class Ball : MonoBehaviour
     private int screenHeight;
     private float maxVertDrag;
 
+    private bool hasGameStarted = false;
     private bool isBallFalling = false;
 
     private void Awake()
@@ -32,12 +34,25 @@ public class Ball : MonoBehaviour
         this.screenHeight = Screen.height;
         this.maxVertDrag = this.verticalDrag;
 
-        this.ballRB.AddForce(Vector2.up * this.impulseForceAmount, ForceMode2D.Impulse);
+        //this.ballRB.AddForce(Vector2.up * this.impulseForceAmount, ForceMode2D.Impulse);
     }
 
     private void Update()
     {
+        // Upon beginning, the first ball should be static in the center of the screen until the player clicks it.
+        if (!this.hasGameStarted)
+        {
+            KeepBallInScreenCenter();
+            return;
+        }
+
         ChangeDragOnBallVelocityDirection();
+    }
+
+    private void KeepBallInScreenCenter()
+    {
+        this.gameObject.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x,
+                                                         Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height / 2, 0)).y);
     }
 
     private void FixedUpdate()
@@ -49,6 +64,8 @@ public class Ball : MonoBehaviour
 
     private void ChangeDragOnBallVelocityDirection()
     {
+        
+
         if (this.ballRB.velocity.y <= 0 && !this.isBallFalling)
         {
             this.verticalDrag = 0.0f;
@@ -85,5 +102,8 @@ public class Ball : MonoBehaviour
         Vector2 upwardsDir = (ballReferencePos - clickPos).normalized;
 
         this.ballRB.AddForce(upwardsDir * forceFactor, ForceMode2D.Impulse);
+
+        if (!this.hasGameStarted)
+            this.hasGameStarted = true;
     }
 }

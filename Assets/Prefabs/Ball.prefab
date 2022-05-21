@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 6511289662787850298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.55, y: 0.55, z: 0.55}
   m_Children:
   - {fileID: 6511289662805787336}
   - {fileID: 1257476766}
@@ -76,8 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856bd112f4640214d9ba990ebc4542c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impulseForceAmount: 25
+  impulseForceAmount: 16
   referencePoint: {fileID: 1257476766}
+  verticalDrag: 7
+  dragApplicationSpeedFactor: 6
 --- !u!50 &6511289662787850303
 Rigidbody2D:
   serializedVersion: 4
@@ -91,7 +93,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 3
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: f3189e6cbdbacfe4b936191b03a65c3c, type: 2}
