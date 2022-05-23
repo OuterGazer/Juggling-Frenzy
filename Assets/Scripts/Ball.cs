@@ -33,6 +33,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private int screenHeight;
     private static float maxUpVertDrag;
     private static float maxDownVertDrag;
+    private static float currentZValue;
 
     private static bool hasGameStarted = false;
     private bool isBallFalling = false;
@@ -64,6 +65,9 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
         // We initialize it at 0.0f, so he ball doesn't weirdly stop on top deadpoint after very first click.
         this.downwardsVerticalDrag = 0.0f;
+
+        // We add on to the Z value each ball so when we create new, we set them one Z level behind to prevent Z fighting
+        currentZValue = this.gameObject.transform.position.z;
     }
 
     private void Update()
@@ -167,7 +171,10 @@ public class Ball : MonoBehaviour, IPointerDownHandler
                 this.canBallBeCopied = false;
 
             // Spawn a copy and get it's Rigidbody2D to pass it later onto the method that will apply the upwards impulse
-            Ball ball = GameObject.Instantiate<Ball>(this.ballPrefab, this.gameObject.transform.position, Quaternion.identity);
+            // Set its Z value higher than the last ball with highest value to prevent Z fighting
+            Ball ball = GameObject.Instantiate<Ball>(this.ballPrefab,
+                                                     new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, currentZValue + 1.0f),
+                                                     Quaternion.identity);
             Rigidbody2D copyBallRB = ball.GetComponent<Rigidbody2D>();
 
             AddUpwardsImpulse(true, copyBallRB);
