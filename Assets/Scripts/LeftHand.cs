@@ -33,4 +33,15 @@ public class LeftHand : MonoBehaviour
 
         this.handRB.position = new Vector2(Mathf.Clamp(this.handRB.position.x, 1.20f, 8.40f), this.handRB.position.y);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            Ball bouncingBall = collision.gameObject.GetComponent<Ball>();
+
+            if (!bouncingBall.CanBallBeCopied)
+                bouncingBall.CanBallBeCopied = true;
+        }
+    }
 }

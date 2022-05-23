@@ -25,16 +25,24 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     [Header("Miscellaneous")]
     [Tooltip("Link to ball prefab to spawn copies of it on right click")]
     [SerializeField] Ball ballPrefab;
+    [Tooltip("The factor to apply to upwards impulse of the copy")]
     [SerializeField] float copyUpwardsImpulseReductionFactor = default;
 
 
     private Rigidbody2D ballRB;
     private int screenHeight;
-    private float maxUpVertDrag;
-    private float maxDownVertDrag;
+    private static float maxUpVertDrag;
+    private static float maxDownVertDrag;
 
     private static bool hasGameStarted = false;
     private bool isBallFalling = false;
+    private bool canBallBeCopied = false;
+    public bool CanBallBeCopied
+    {
+        get { return this.canBallBeCopied; }
+        set { this.canBallBeCopied = value; }
+    }
+
 
     private void Awake()
     {
@@ -45,8 +53,14 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     {
         this.screenHeight = Screen.height;
 
-        this.maxUpVertDrag = this.upwardsVerticalDrag;
-        this.maxDownVertDrag = this.downwardsVerticalDrag;
+        // First ball sets max up and down drag for all balls to come next, next balls will ignore this piece of code
+        // This is needed because copied balls would inherit the current drag values in the moment of making click, causing unwanted behaviour as the game progressed
+        if(Mathf.Approximately(maxUpVertDrag, 0) ||
+           Mathf.Approximately(maxDownVertDrag, 0))
+        {
+            maxUpVertDrag = this.upwardsVerticalDrag;
+            maxDownVertDrag = this.downwardsVerticalDrag;
+        }        
 
         // We initialize it at 0.0f, so he ball doesn't weirdly stop on top deadpoint after very first click.
         this.downwardsVerticalDrag = 0.0f;
@@ -98,7 +112,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         }
         else if (this.ballRB.velocity.y < 0)
         {
-            if (this.upwardsVerticalDrag < this.maxUpVertDrag)
+            if (this.upwardsVerticalDrag < maxUpVertDrag)
             {
                 this.upwardsVerticalDrag += Time.deltaTime * this.upwardsDragApplicationSpeedFactor;
             }
@@ -110,7 +124,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         }
         else if (this.ballRB.velocity.y > 0)
         {
-            if (this.downwardsVerticalDrag < this.maxDownVertDrag)
+            if (this.downwardsVerticalDrag < maxDownVertDrag)
             {
                 this.downwardsVerticalDrag += Time.deltaTime * this.downwardsDragApplicationSpeedFactor;
             }
@@ -134,13 +148,23 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         {
             AddUpwardsImpulse(false, this.ballRB);
 
+            // Prevents ball from going back to the middle of the screen after clicking
             if (!hasGameStarted)
                 hasGameStarted = true;
+
+            if (!this.canBallBeCopied)
+                this.canBallBeCopied = true;
         }       
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             // Prevent copies spawning if game hasn't started
             if (!hasGameStarted) { return; }
+
+            // We can copy balls from an existing ball only after the existing ball have at least bounced once or been clicked on once
+            if (!this.canBallBeCopied) { return; }
+
+            if (this.canBallBeCopied)
+                this.canBallBeCopied = false;
 
             // Spawn a copy and get it's Rigidbody2D to pass it later onto the method that will apply the upwards impulse
             Ball ball = GameObject.Instantiate<Ball>(this.ballPrefab, this.gameObject.transform.position, Quaternion.identity);
