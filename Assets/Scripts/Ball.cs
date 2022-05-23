@@ -22,13 +22,18 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     [Tooltip("This is the speed in which downwards drag is increased as the ball goes up to dampen it's upwards velocity")]
     [SerializeField] float downwardsDragApplicationSpeedFactor = default;
 
+    [Header("Miscellaneous")]
+    [Tooltip("Link to ball prefab to spawn copies of it on right click")]
+    [SerializeField] Ball ballPrefab;
+    [SerializeField] float copyUpwardsImpulseReductionFactor = default;
+
 
     private Rigidbody2D ballRB;
     private int screenHeight;
     private float maxUpVertDrag;
     private float maxDownVertDrag;
 
-    private bool hasGameStarted = false;
+    private static bool hasGameStarted = false;
     private bool isBallFalling = false;
 
     private void Awake()
@@ -50,7 +55,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private void Update()
     {
         // Upon beginning, the first ball should be static in the center of the screen until the player clicks it.
-        if (!this.hasGameStarted)
+        if (!hasGameStarted)
         {
             KeepBallInScreenCenter();
             return;
@@ -85,7 +90,6 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         if (this.ballRB.velocity.y <= 0 && !this.isBallFalling)
         {
             this.upwardsVerticalDrag = 0.0f;
-            //this.downwardsVerticalDrag = 0.0f;
             this.isBallFalling = true;
         }
         else if (this.ballRB.velocity.y < 0)
@@ -98,7 +102,6 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         else if (this.ballRB.velocity.y >= 0 && this.isBallFalling)
         {
             this.downwardsVerticalDrag = 0.0f;
-            //this.upwardsVerticalDrag = 0.0f;
             this.isBallFalling = false;
         }
         else if (this.ballRB.velocity.y > 0)
@@ -114,24 +117,50 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            // If we click the ball low on the screen it applies full force upward. The higher we click, the less force is applied.
-            // This is to have the upper deadpoint be always at roughly the same height to avoid ball flying off the screen.
-            float forceFactor = (1 - (Mouse.current.position.ReadValue().y / this.screenHeight)) * this.impulseForceAmount;
+            AddUpwardsImpulse(false, this.ballRB);
 
-            // We eliminate all velocity to manipulate the ball better.
-            this.ballRB.velocity = Vector2.zero;
+            if (!hasGameStarted)
+                hasGameStarted = true;
+        }       
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // Prevent copies spawning if game hasn't started
+            if (!hasGameStarted) { return; }
 
-            // We calculate the vector towards the reference point, so the ball goes up slightly to one side depending on where exactly on the ball the player clicked.
+            // Spawn a copy and get it's Rigidbody2D to pass it later onto the method that will apply the upwards impulse
+            Ball ball = GameObject.Instantiate<Ball>(this.ballPrefab, this.gameObject.transform.position, Quaternion.identity);
+            Rigidbody2D copyBallRB = ball.GetComponent<Rigidbody2D>();
 
-            Vector2 clickPos = new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y);
-            Vector2 ballReferencePos = new Vector2(this.referencePoint.position.x, this.referencePoint.position.y);
+            AddUpwardsImpulse(true, copyBallRB);
+        }
+    }
 
-            Vector2 upwardsDir = (ballReferencePos - clickPos).normalized;
+    private void AddUpwardsImpulse(bool isCopy, Rigidbody2D inBallRB)
+    {
+        // If we click the ball low on the screen it applies full force upward. The higher we click, the less force is applied.
+        // This is to have the upper deadpoint be always at roughly the same height to avoid ball flying off the screen.
+        float forceFactor = (1 - (Mouse.current.position.ReadValue().y / this.screenHeight)) * this.impulseForceAmount;
 
+        // We eliminate all velocity to manipulate the ball better.
+        inBallRB.velocity = Vector2.zero;
+
+        // We calculate the vector towards the reference point, so the ball goes up slightly to one side depending on where exactly on the ball the player clicked.
+
+        Vector2 clickPos = new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y);
+        Vector2 ballReferencePos = new Vector2(this.referencePoint.position.x, this.referencePoint.position.y);
+
+        Vector2 upwardsDir = (ballReferencePos - clickPos).normalized;
+
+        // If we are not creating a new ball, send current ball upwards
+        // Else, send current ball upwards with full impulse and copy ball in same direction with reduced impulse
+        if (!isCopy)
+        {
+            inBallRB.AddForce(upwardsDir * forceFactor, ForceMode2D.Impulse);
+        }            
+        else
+        {
             this.ballRB.AddForce(upwardsDir * forceFactor, ForceMode2D.Impulse);
-
-            if (!this.hasGameStarted)
-                this.hasGameStarted = true;
-        }        
+            inBallRB.AddForce(upwardsDir * forceFactor * this.copyUpwardsImpulseReductionFactor, ForceMode2D.Impulse);
+        }            
     }
 }

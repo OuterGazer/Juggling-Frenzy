@@ -82,6 +82,8 @@ MonoBehaviour:
   downwardsVerticalDrag: 4.25
   upwardsDragApplicationSpeedFactor: 4
   downwardsDragApplicationSpeedFactor: 5.7
+  ballPrefab: {fileID: 6511289662787850301}
+  copyUpwardsImpulseReductionFactor: 0.75
 --- !u!50 &6511289662787850303
 Rigidbody2D:
   serializedVersion: 4
