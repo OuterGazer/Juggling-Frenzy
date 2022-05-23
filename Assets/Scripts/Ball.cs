@@ -148,9 +148,27 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        // We raycast in case more than one ball lays on top of others so we bump upwards all of them
+        // In case of right click to copy, only first ball copies and rest from behind get bumped upwards
+        RaycastHit2D[] ballsClicked = Physics2D.RaycastAll(new Vector3(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y, -100f),
+                                                           new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y),
+                                                           Mathf.Infinity, LayerMask.GetMask("Ball"), -1.0f, currentZValue + 1.0f);
+
+        if (ballsClicked.Length < 1) { return; }
+
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            AddUpwardsImpulse(false, this.ballRB);
+            for(int i = 0; i < ballsClicked.Length; i++)
+            {
+                Rigidbody2D ballRB = ballsClicked[i].rigidbody;
+                AddUpwardsImpulse(false, ballRB);
+
+                Ball ball = ballsClicked[i].transform.GetComponent<Ball>();
+                if (!ball.canBallBeCopied)
+                    ball.canBallBeCopied = true;
+            }
+
+            //AddUpwardsImpulse(false, this.ballRB);
 
             // Prevents ball from going back to the middle of the screen after clicking
             if (!hasGameStarted)
@@ -191,7 +209,6 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         inBallRB.velocity = Vector2.zero;
 
         // We calculate the vector towards the reference point, so the ball goes up slightly to one side depending on where exactly on the ball the player clicked.
-
         Vector2 clickPos = new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y);
         Vector2 ballReferencePos = new Vector2(this.referencePoint.position.x, this.referencePoint.position.y);
 
