@@ -62,6 +62,10 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         }
 
         ChangeDragOnBallVelocityDirection();
+
+        // If ball falls lower than screen botton begin life subtraction/ball destruction process
+        if (this.gameObject.transform.position.y <= -0.40f)
+            ProcessBallDestruction();
     }
     
 
@@ -111,6 +115,11 @@ public class Ball : MonoBehaviour, IPointerDownHandler
                 this.downwardsVerticalDrag += Time.deltaTime * this.downwardsDragApplicationSpeedFactor;
             }
         }
+    }
+
+    private void ProcessBallDestruction()
+    {
+        GameObject.Destroy(this.gameObject);
     }
 
     public void OnPointerDown(PointerEventData eventData)
