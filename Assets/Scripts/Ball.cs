@@ -119,7 +119,13 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void ProcessBallDestruction()
     {
-        GameObject.Destroy(this.gameObject);
+        // If there was only one ball, set it again in the middle and don't subtract a life, else subtract life and destroy ball
+        Ball[] totalBalls = GameObject.FindObjectsOfType<Ball>();
+
+        if (totalBalls.Length < 2)
+            hasGameStarted = false;
+        else
+            GameObject.Destroy(this.gameObject);
     }
 
     public void OnPointerDown(PointerEventData eventData)
