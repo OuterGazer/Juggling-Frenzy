@@ -159,7 +159,9 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         }            
         else
         {
+            this.ballRB.velocity = Vector2.zero;
             this.ballRB.AddForce(upwardsDir * forceFactor, ForceMode2D.Impulse);
+
             inBallRB.AddForce(upwardsDir * forceFactor * this.copyUpwardsImpulseReductionFactor, ForceMode2D.Impulse);
         }            
     }
