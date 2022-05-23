@@ -841,10 +841,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 772584427, guid: 2d3712c7b721ca84fa80baaf3503b20b, type: 3}
-      propertyPath: moveSpeed
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 4144474125984007891, guid: 2d3712c7b721ca84fa80baaf3503b20b, type: 3}
       propertyPath: m_Name
       value: Left Hand
@@ -902,21 +898,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1257476765, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1257476766, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850298, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_Name
       value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850298, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_RootOrder
@@ -961,110 +945,6 @@ PrefabInstance:
     - target: {fileID: 6511289662787850300, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_Id
-      value: 5a7b4bd0-bdcb-4b8e-9599-09e60ff1eb6b
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_Name
-      value: Mouse Down
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_Flags
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: impulseForceAmount
-      value: 14.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_Id
-      value: e13d0a7c-0018-47cf-ada4-a726166fd5e3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: upwardsVerticalDrag
-      value: 4.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_Name
-      value: Left Mouse Down
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: downwardsVerticalDrag
-      value: 4.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_Flags
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_ExpectedControlType
-      value: Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: upwardsDragApplicationSpeedFactor
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: downwardsDragApplicationSpeedFactor
-      value: 5.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_ExpectedControlType
-      value: Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_SingletonActionBindings.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_SingletonActionBindings.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_SingletonActionBindings.Array.data[0].m_Id
-      value: c88b5e9d-ff44-4201-8bb3-7aa78ce10d02
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Mouse>/leftButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_SingletonActionBindings.Array.data[0].m_Id
-      value: e7a58923-3173-409a-8bf8-b668c496f19b
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: mouseDown.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Mouse Down
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Mouse>/leftButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: leftMouseDown.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Left Mouse Down
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850303, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850303, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_UseAutoMass
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662805787334, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}

@@ -27,6 +27,10 @@ public class LeftHand : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Move left hand clamping movement within screen limits
+        
         this.handRB.MovePosition(this.handRB.position += (this.handMovement * this.moveSpeed * Time.fixedDeltaTime));
+
+        this.handRB.position = new Vector2(Mathf.Clamp(this.handRB.position.x, 1.20f, 8.40f), this.handRB.position.y);
     }
 }

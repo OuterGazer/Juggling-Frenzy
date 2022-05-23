@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1257476766}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reference Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257476765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 4.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6511289662787850300}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 6511289662787850300}
   - component: {fileID: 6511289662787850301}
   - component: {fileID: 6511289662787850303}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,11 +76,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856bd112f4640214d9ba990ebc4542c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impulseForceAmount: 15
+  impulseForceAmount: 14.7
   referencePoint: {fileID: 1257476766}
-  verticalDrag: 7
-  upwardsDragApplicationSpeedFactor: 5
-  downwardsDragApplicationSpeedFactor: 7
+  upwardsVerticalDrag: 4.25
+  downwardsVerticalDrag: 4.25
+  upwardsDragApplicationSpeedFactor: 4
+  downwardsDragApplicationSpeedFactor: 5.7
 --- !u!50 &6511289662787850303
 Rigidbody2D:
   serializedVersion: 4
@@ -113,7 +114,7 @@ GameObject:
   - component: {fileID: 6511289662805787336}
   - component: {fileID: 6511289662805787337}
   - component: {fileID: 6511289662805787339}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Child
   m_TagString: Untagged
   m_Icon: {fileID: 0}
