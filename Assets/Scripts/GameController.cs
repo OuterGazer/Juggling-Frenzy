@@ -18,8 +18,10 @@ public class GameController : MonoBehaviour
 
     [Header("UI Characteristics")]
     [SerializeField] TextMeshProUGUI livesText;
-    [SerializeField] InputAction pauseButton;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] InputAction pauseButton;
+    [SerializeField] InputAction restartButton;
+    [SerializeField] InputAction quitButton;
 
 
     //Cached references
@@ -29,16 +31,22 @@ public class GameController : MonoBehaviour
 
     //Boolean variables
     private bool isGamePaused = false;
+    private bool isBallLost = false;
 
     private void Awake()
     {
         this.pauseButton.Enable();
+        this.restartButton.Enable();
+        this.quitButton.Enable();
+
         this.scoreController = GameObject.FindObjectOfType<ScoreController>();
         this.leftHand = GameObject.FindObjectOfType<LeftHand>();
     }
     private void OnDestroy()
     {
         this.pauseButton.Disable();
+        this.restartButton.Disable();
+        this.quitButton.Disable();
     }
 
     private void Start()
@@ -62,23 +70,43 @@ public class GameController : MonoBehaviour
             Time.timeScale = 0;
             AudioListener.pause = true;
 
-            this.leftHand.gameObject.SetActive(false);
-            foreach (Ball item in this.scoreController.Balls)
-                item.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            MakeGameElementsDisappearOrAppear(true);
 
             this.pauseMenu.SetActive(true);
         }
         else if(!this.isGamePaused && Mathf.Approximately(Time.timeScale, 0))
         {
+            // This if block statement triggers when loosing a ball and it instantly sets timeScale again to 1, ruining the minipause effect.
+            if (this.isBallLost) { return; }
+
             Time.timeScale = 1;
             AudioListener.pause = false;
 
-            this.leftHand.gameObject.SetActive(true);
-            foreach (Ball item in this.scoreController.Balls)
-                item.GetComponentInChildren<SpriteRenderer>().enabled = true;
+            MakeGameElementsDisappearOrAppear(false);
 
             this.pauseMenu.SetActive(false);
         }
+
+        ManagePauseControls();
+    }
+
+    private void ManagePauseControls()
+    {
+        if (this.isGamePaused)
+        {
+            if (this.restartButton.triggered)
+                UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+
+            if (this.quitButton.triggered)
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
+    }
+
+    private void MakeGameElementsDisappearOrAppear(bool shouldDisappear)
+    {
+        this.leftHand.gameObject.SetActive(!shouldDisappear);
+        foreach (Ball item in this.scoreController.Balls)
+            item.GetComponentInChildren<SpriteRenderer>().enabled = !shouldDisappear;
     }
 
     public void LooseOneLife()
@@ -95,11 +123,13 @@ public class GameController : MonoBehaviour
 
     private IEnumerator BallLostEffect(int lives)
     {
+        this.isBallLost = true;
         Time.timeScale = 0.0f;
         // Play SFX
 
         yield return new WaitForSecondsRealtime(1.5f); // Really add the time till the sfx is done playing
 
+        this.isBallLost = false;
         Time.timeScale = 1.0f;
 
         if(this.playerLives <= 0)

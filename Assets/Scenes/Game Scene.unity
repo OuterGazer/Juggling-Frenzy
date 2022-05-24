@@ -984,6 +984,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLives: 5
   livesText: {fileID: 883505832}
+  pauseMenu: {fileID: 2136998040}
   pauseButton:
     m_Name: Pause Button
     m_Type: 1
@@ -1001,7 +1002,40 @@ MonoBehaviour:
       m_Action: Pause Button
       m_Flags: 0
     m_Flags: 1
-  pauseMenu: {fileID: 2136998040}
+  restartButton:
+    m_Name: Restart Button
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: e8e7c169-7023-4e34-8c35-8fe3373647c9
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 5f90c8c1-2799-416a-90c1-68c7cf9ed9d8
+      m_Path: <Keyboard>/r
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Restart Button
+      m_Flags: 0
+    m_Flags: 1
+  quitButton:
+    m_Name: Quit Button
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 8d0ffc1b-fa42-4c98-a118-9d1e2e63d6fc
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 2b238e7c-6644-4826-86a4-8da5d58b5e59
+      m_Path: <Keyboard>/q
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Quit Button
+      m_Flags: 0
+    m_Flags: 1
 --- !u!1 &828516620
 GameObject:
   m_ObjectHideFlags: 0
