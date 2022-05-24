@@ -3341,18 +3341,6 @@ PrefabInstance:
       propertyPath: advancedTutorial
       value: 
       objectReference: {fileID: 449779679}
-    - target: {fileID: 6511289662805787337, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Color.b
-      value: 0.11764706
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662805787337, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Color.g
-      value: 0.36862746
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511289662805787337, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: m_Color.r
-      value: 0.972549
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
 --- !u!1001 &6583005139502428222
