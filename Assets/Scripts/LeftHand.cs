@@ -12,14 +12,19 @@ public class LeftHand : MonoBehaviour
     [Header("Score Characteristics")]
     [SerializeField] int bounceLimitToNegativeBaseScore = default;
 
+    [Header("SFX Characteristics")]
+    [SerializeField] AudioClip ballBounceSFX;
+
 
     private Rigidbody2D handRB;
     private Vector2 handMovement;
+    private AudioSource audioSource;
 
 
     private void Awake()
     {
         this.handRB = this.gameObject.GetComponent<Rigidbody2D>();
+        this.audioSource = this.gameObject.GetComponent<AudioSource>();
     }
 
 
@@ -55,6 +60,9 @@ public class LeftHand : MonoBehaviour
 
 
                 bouncingBall.AddLeftHandBounce();
+
+            this.audioSource.pitch = Random.Range(0.90f, 1.1f);
+            this.audioSource.PlayOneShot(this.ballBounceSFX);
         }
     }
 }
