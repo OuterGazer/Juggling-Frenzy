@@ -6,10 +6,12 @@ using TMPro;
 public class ScoreController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] float scoreCountTick = default;
 
 
     private int currentScore = 0;
     private List<Ball> balls;
+    private float gameTimeCounter = 0.0f;
 
 
     private void Awake()
@@ -25,7 +27,20 @@ public class ScoreController : MonoBehaviour
 
     private void Update()
     {
-        //TODO: add score per second logic here
+        if (!Ball.HasGameStarted) { return; }
+
+        this.gameTimeCounter += Time.deltaTime;
+
+        if(this.gameTimeCounter >= this.scoreCountTick)
+        {
+            AddScore();
+            this.gameTimeCounter = 0.0f;
+        }
+    }
+
+    public bool CheckIfBallExists(Ball ball)
+    {
+        return balls.Contains(ball);
     }
 
     public void ManageBallList(bool shouldBallBeErased, Ball ball)
@@ -34,5 +49,21 @@ public class ScoreController : MonoBehaviour
             this.balls.Add(ball);
         else
             this.balls.Remove(ball);
+    }
+
+    private void AddScore()
+    {
+        int scoreToAdd = 0;
+
+        for(int i = 0; i < this.balls.Count; i++)
+        {
+            scoreToAdd += this.balls[i].CurrentBaseScore;
+        }
+
+        scoreToAdd *= this.balls.Count;
+
+        this.currentScore += scoreToAdd;
+
+        this.scoreText.text = this.currentScore.ToString();
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour, IPointerDownHandler
 {
-    [Header("Physics characteristics")]
+    [Header("Physics Characteristics")]
     [Tooltip("This is the force applied upwards upon ball click.")]
     [SerializeField] float impulseForceAmount = default;
     [Tooltip("This is the childed reference point used to calculate the sideways moving. The closer it is to the ball, the more the ball will move towards the sides upon click.")]
@@ -22,11 +22,22 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     [Tooltip("This is the speed in which downwards drag is increased as the ball goes up to dampen it's upwards velocity")]
     [SerializeField] float downwardsDragApplicationSpeedFactor = default;
 
-    [Header("Miscellaneous")]
+    [Header("New Ball Creation Characteristics")]
     [Tooltip("Link to ball prefab to spawn copies of it on right click")]
     [SerializeField] Ball ballPrefab;
     [Tooltip("The factor to apply to upwards impulse of the copy")]
     [SerializeField] float copyUpwardsImpulseReductionFactor = default;
+
+
+    [Header("Ball Score Characteristics")]
+    [SerializeField] int currentBaseScore = default;
+    public int CurrentBaseScore
+    {
+        get { return this.currentBaseScore; }
+        set { this.currentBaseScore = value; }
+    }
+    private static int baseScore;
+    public static int BaseScore => baseScore;
 
 
     private Rigidbody2D ballRB;
@@ -35,8 +46,10 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private static float maxUpVertDrag;
     private static float maxDownVertDrag;
     private static float currentZValue;
+    private ScoreController scoreController;
 
     private static bool hasGameStarted = false;
+    public static bool HasGameStarted => hasGameStarted;
     private bool isBallFalling = false;
     private bool canBallBeCopied = false;
     public bool CanBallBeCopied
@@ -50,6 +63,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     {
         this.ballRB = this.gameObject.GetComponent<Rigidbody2D>();
         this.ballMask = LayerMask.GetMask("Ball");
+        this.scoreController = GameObject.FindObjectOfType<ScoreController>();
     }
 
     private void Start()
@@ -70,6 +84,15 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
         // We add on to the Z value each ball so when we create new, we set them one Z level behind to prevent Z fighting
         currentZValue = this.gameObject.transform.position.z;
+
+        // We add the ball to the list for managing the score and set the base score, as current score will be changing
+        this.scoreController.ManageBallList(false, this);
+
+        // First ball sets the base score fro all balls, ther est of the balls get the base score on spawn (if not they copy the current base score from the ball they spawn from)
+        if (baseScore == 0)
+            baseScore = this.currentBaseScore;
+        else
+            this.currentBaseScore = baseScore;
     }
 
     private void Update()
@@ -101,6 +124,12 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         {
             this.ballRB.AddForce(Vector2.up * this.downwardsVerticalDrag, ForceMode2D.Force);
         }
+    }
+
+    private void OnDestroy()
+    {
+        // We erase the ball from the score list on destroy
+        this.scoreController.ManageBallList(true, this);
     }
 
     private void KeepBallInScreenCenter()
@@ -240,6 +269,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             Ball ball = ballsClicked[i].transform.GetComponent<Ball>();
             if (!ball.canBallBeCopied)
                 ball.canBallBeCopied = true;
+
+            ball.CurrentBaseScore += 3;
         }
     }
 }

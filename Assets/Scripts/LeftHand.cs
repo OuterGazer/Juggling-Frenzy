@@ -42,6 +42,8 @@ public class LeftHand : MonoBehaviour
 
             if (!bouncingBall.CanBallBeCopied)
                 bouncingBall.CanBallBeCopied = true;
+
+            bouncingBall.CurrentBaseScore = Ball.BaseScore;
         }
     }
 }
