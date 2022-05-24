@@ -1683,6 +1683,8 @@ MonoBehaviour:
       m_Action: Quit Button
       m_Flags: 0
     m_Flags: 1
+  lifeLostSFX: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+  gameOverSFX: {fileID: 8300000, guid: a0ca8964c08d54c5dbebf245bdc474ca, type: 3}
 --- !u!82 &726558761
 AudioSource:
   m_ObjectHideFlags: 0

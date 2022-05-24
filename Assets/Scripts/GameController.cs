@@ -33,10 +33,15 @@ public class GameController : MonoBehaviour
     [SerializeField] InputAction restartButton;
     [SerializeField] InputAction quitButton;
 
+    [Header("SFX Characteristics")]
+    [SerializeField] AudioClip lifeLostSFX;
+    [SerializeField] AudioClip gameOverSFX;
+
 
     //Cached references
     private ScoreController scoreController;
     private LeftHand leftHand;
+    private AudioSource audioSource;
 
 
     //Boolean variables
@@ -53,6 +58,7 @@ public class GameController : MonoBehaviour
 
         this.scoreController = GameObject.FindObjectOfType<ScoreController>();
         this.leftHand = GameObject.FindObjectOfType<LeftHand>();
+        this.audioSource = this.gameObject.GetComponent<AudioSource>();
     }
     private void OnDestroy()
     {
@@ -138,16 +144,17 @@ public class GameController : MonoBehaviour
 
     private IEnumerator BallLostEffect(int lives)
     {
+        AudioSource.PlayClipAtPoint(this.lifeLostSFX, Camera.main.transform.position, 0.40f);
+
         this.isBallLost = true;
         Time.timeScale = 0.0f;
-        AudioListener.pause = true;
-        // Play SFX        
+        this.audioSource.Pause();        
 
         yield return new WaitForSecondsRealtime(1.5f); // Really add the time till the sfx is done playing
 
         this.isBallLost = false;
         Time.timeScale = 1.0f;
-        AudioListener.pause = false;
+        this.audioSource.Play();
         
         if(this.playerLives <= 0)
             FinishGame();
@@ -155,10 +162,12 @@ public class GameController : MonoBehaviour
 
     private void FinishGame()
     {
+        AudioSource.PlayClipAtPoint(this.gameOverSFX, Camera.main.transform.position, 0.40f);
+
         this.isGameOver = true;
 
         Time.timeScale = 0;
-        AudioListener.pause = true;
+        this.audioSource.Pause();
 
         MakeGameElementsDisappearOrAppear(true);
         this.livesText.enabled = false;
