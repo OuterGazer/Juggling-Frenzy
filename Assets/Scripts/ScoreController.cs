@@ -5,9 +5,14 @@ using TMPro;
 
 public class ScoreController : MonoBehaviour
 {
+    [Header("UI Characteristics")]
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] float scoreCountTick = default;
 
+    [Header("Score Management Characteristics")]
+    [SerializeField] int pointsThresholdForExtraLife;
+    private GameController gameController;
+    private int pointsForNewLifeEarned;
 
     private int currentScore = 0;
     public int CurrentScore => this.currentScore;
@@ -22,6 +27,7 @@ public class ScoreController : MonoBehaviour
 
     private void Awake()
     {
+        this.gameController = GameObject.FindObjectOfType<GameController>();
         this.balls = new List<Ball>();
     }
 
@@ -29,6 +35,8 @@ public class ScoreController : MonoBehaviour
     private void Start()
     {
         this.scoreText.text = this.currentScore.ToString();
+
+        this.pointsForNewLifeEarned = this.pointsThresholdForExtraLife;
     }
 
     private void Update()
@@ -69,6 +77,14 @@ public class ScoreController : MonoBehaviour
         scoreToAdd *= this.balls.Count;
 
         this.currentScore += scoreToAdd;
+
+        if (this.currentScore >= this.pointsForNewLifeEarned)
+        {
+            this.gameController.AddOneLife();
+
+            this.pointsForNewLifeEarned += this.pointsThresholdForExtraLife;
+        }
+            
 
         this.scoreText.text = this.currentScore.ToString();
     }
