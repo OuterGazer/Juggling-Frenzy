@@ -30,6 +30,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
 
     private Rigidbody2D ballRB;
+    private LayerMask ballMask;
     private int screenHeight;
     private static float maxUpVertDrag;
     private static float maxDownVertDrag;
@@ -48,6 +49,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private void Awake()
     {
         this.ballRB = this.gameObject.GetComponent<Rigidbody2D>();
+        this.ballMask = LayerMask.GetMask("Ball");
     }
 
     private void Start()
@@ -148,34 +150,24 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        // We raycast in case more than one ball lays on top of others so we bump upwards all of them
-        // In case of right click to copy, only first ball copies and rest from behind get bumped upwards
-        RaycastHit2D[] ballsClicked = Physics2D.RaycastAll(new Vector3(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y, -100f),
-                                                           new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y),
-                                                           Mathf.Infinity, LayerMask.GetMask("Ball"), -1.0f, currentZValue + 1.0f);
+        // First of all we calculate the exact position of the pointer as we are goig to use it many times.
+        Vector2 clickPos = new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y);
 
+        // We raycast from pointer position and camera Z in case more than one ball lays on top of others so we bump upwards all of them
+        // In case of right click to copy, only first ball copies and rest from behind get bumped upwards
+        RaycastHit2D[] ballsClicked = Physics2D.RaycastAll(new Vector3(clickPos.x, clickPos.y, Camera.main.transform.position.z),
+                                                           clickPos, Mathf.Infinity, this.ballMask, -1.0f, currentZValue + 1.0f);
+
+        // Safeguard against just clicking the background
         if (ballsClicked.Length < 1) { return; }
 
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            for(int i = 0; i < ballsClicked.Length; i++)
-            {
-                Rigidbody2D ballRB = ballsClicked[i].rigidbody;
-                AddUpwardsImpulse(false, ballRB);
-
-                Ball ball = ballsClicked[i].transform.GetComponent<Ball>();
-                if (!ball.canBallBeCopied)
-                    ball.canBallBeCopied = true;
-            }
-
-            //AddUpwardsImpulse(false, this.ballRB);
+            LoopThroughClickedBalls(clickPos, ballsClicked, 0);
 
             // Prevents ball from going back to the middle of the screen after clicking
             if (!hasGameStarted)
                 hasGameStarted = true;
-
-            if (!this.canBallBeCopied)
-                this.canBallBeCopied = true;
         }       
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -190,16 +182,21 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             // Spawn a copy and get it's Rigidbody2D to pass it later onto the method that will apply the upwards impulse
             // Set its Z value higher than the last ball with highest value to prevent Z fighting
-            Ball ball = GameObject.Instantiate<Ball>(this.ballPrefab,
+            Ball copyBall = GameObject.Instantiate<Ball>(this.ballPrefab,
                                                      new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, currentZValue + 1.0f),
                                                      Quaternion.identity);
-            Rigidbody2D copyBallRB = ball.GetComponent<Rigidbody2D>();
+            Rigidbody2D copyBallRB = copyBall.GetComponent<Rigidbody2D>();
 
-            AddUpwardsImpulse(true, copyBallRB);
+            AddUpwardsImpulse(true, copyBallRB, clickPos);
+
+            // We finally boost upwards the rest of the balls after giving impulse tot he first one and the copy
+            LoopThroughClickedBalls(clickPos, ballsClicked, 1);
+
         }
     }
+    
 
-    private void AddUpwardsImpulse(bool isCopy, Rigidbody2D inBallRB)
+    private void AddUpwardsImpulse(bool isCopy, Rigidbody2D inBallRB, Vector2 clickPos)
     {
         // If we click the ball low on the screen it applies full force upward. The higher we click, the less force is applied.
         // This is to have the upper deadpoint be always at roughly the same height to avoid ball flying off the screen.
@@ -208,8 +205,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         // We eliminate all velocity to manipulate the ball better.
         inBallRB.velocity = Vector2.zero;
 
-        // We calculate the vector towards the reference point, so the ball goes up slightly to one side depending on where exactly on the ball the player clicked.
-        Vector2 clickPos = new Vector2(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).x, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()).y);
+        // We calculate the vector towards the reference point, so the ball goes up slightly to one side depending on where exactly on the ball the player clicked.        
         Vector2 ballReferencePos = new Vector2(this.referencePoint.position.x, this.referencePoint.position.y);
 
         Vector2 upwardsDir = (ballReferencePos - clickPos).normalized;
@@ -227,5 +223,18 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             inBallRB.AddForce(upwardsDir * forceFactor * this.copyUpwardsImpulseReductionFactor, ForceMode2D.Impulse);
         }            
+    }
+
+    private void LoopThroughClickedBalls(Vector2 clickPos, RaycastHit2D[] ballsClicked, int startBall)
+    {
+        for (int i = startBall; i < ballsClicked.Length; i++)
+        {
+            Rigidbody2D ballRB = ballsClicked[i].rigidbody;
+            AddUpwardsImpulse(false, ballRB, clickPos);
+
+            Ball ball = ballsClicked[i].transform.GetComponent<Ball>();
+            if (!ball.canBallBeCopied)
+                ball.canBallBeCopied = true;
+        }
     }
 }
