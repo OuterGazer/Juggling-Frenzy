@@ -62,6 +62,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     [Header("SFX Characteristics")]
     [SerializeField] AudioClip clickBallSFX;
     [SerializeField] AudioClip copyBallSFX;
+    [SerializeField] AudioClip ballBounceSFX;
 
 
     // Cached references
@@ -352,5 +353,11 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             ball.CurrentBaseScore += baseScore;
         else
             ball.CurrentBaseScore = baseScore;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Side Limit"))
+            PlaySFX(this.ballBounceSFX);
     }
 }

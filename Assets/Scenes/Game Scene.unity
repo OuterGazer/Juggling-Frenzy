@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 37298033}
   m_Layer: 8
   m_Name: Slope
-  m_TagString: Untagged
+  m_TagString: Side Limit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -773,7 +773,7 @@ GameObject:
   - component: {fileID: 313562186}
   m_Layer: 8
   m_Name: Straight Sprite
-  m_TagString: Untagged
+  m_TagString: Side Limit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1824,7 +1824,7 @@ GameObject:
   - component: {fileID: 881820346}
   m_Layer: 8
   m_Name: Slope (1)
-  m_TagString: Untagged
+  m_TagString: Side Limit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2488,7 +2488,7 @@ GameObject:
   - component: {fileID: 1210261397}
   m_Layer: 8
   m_Name: Straight Sprite (1)
-  m_TagString: Untagged
+  m_TagString: Side Limit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3550,6 +3550,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
+      propertyPath: ballBounceSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
     - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: basicTutorial
       value: 
