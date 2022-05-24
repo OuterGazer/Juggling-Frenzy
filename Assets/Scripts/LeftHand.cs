@@ -9,6 +9,9 @@ public class LeftHand : MonoBehaviour
     [Tooltip("Sets the lateral speed of the hand")]
     [Range(0.0f, 10.0f)][SerializeField] float moveSpeed;
 
+    [Header("Score Characteristics")]
+    [SerializeField] int bounceLimitToNegativeBaseScore = default;
+
 
     private Rigidbody2D handRB;
     private Vector2 handMovement;
@@ -40,10 +43,18 @@ public class LeftHand : MonoBehaviour
         {
             Ball bouncingBall = collision.gameObject.GetComponent<Ball>();
 
+            // We allow bounced balls to be able to be copied
             if (!bouncingBall.CanBallBeCopied)
                 bouncingBall.CanBallBeCopied = true;
 
-            bouncingBall.CurrentBaseScore = Ball.BaseScore;
+            // A bounced ball will have its base score reset, after too many bounces it will get an increasingly negative penalty score to avoid abusing the platform with gazillion balls 
+            if (bouncingBall.LeftHandBounces < this.bounceLimitToNegativeBaseScore)
+                bouncingBall.CurrentBaseScore = Ball.BaseScore;
+            else
+                bouncingBall.CurrentBaseScore = bouncingBall.PenaltyScore * (bouncingBall.LeftHandBounces - this.bounceLimitToNegativeBaseScore);
+
+
+                bouncingBall.AddLeftHandBounce();
         }
     }
 }

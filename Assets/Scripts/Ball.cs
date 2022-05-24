@@ -30,16 +30,30 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
 
     [Header("Ball Score Characteristics")]
-    [SerializeField] int currentBaseScore = default;
+    [SerializeField] int currentBaseScore = default;    
     public int CurrentBaseScore
     {
         get { return this.currentBaseScore; }
         set { this.currentBaseScore = value; }
     }
+    [SerializeField] int penaltyScore = default;
+    public int PenaltyScore => this.penaltyScore;
+
     private static int baseScore;
     public static int BaseScore => baseScore;
 
+    private int leftHandBounces;
+    public int LeftHandBounces => this.leftHandBounces;
+    public void SetLeftHandBouncesToZero()
+    {
+        this.leftHandBounces = 0;
+    }
+    public void AddLeftHandBounce()
+    {
+        this.leftHandBounces += 1;
+    }
 
+    // Cached references
     private Rigidbody2D ballRB;
     private LayerMask ballMask;
     private int screenHeight;
@@ -48,6 +62,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private static float currentZValue;
     private ScoreController scoreController;
 
+    // Boolean variables
     private static bool hasGameStarted = false;
     public static bool HasGameStarted => hasGameStarted;
     private bool isBallFalling = false;
@@ -93,6 +108,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             baseScore = this.currentBaseScore;
         else
             this.currentBaseScore = baseScore;
+
+        SetLeftHandBouncesToZero();
     }
 
     private void Update()
@@ -223,6 +240,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             AddUpwardsImpulse(true, copyBallRB, clickPos);
 
+            SetBallScore(this);
+
             // We finally boost upwards the rest of the balls after giving impulse tot he first one and the copy
             LoopThroughClickedBalls(clickPos, ballsClicked, 1);
 
@@ -270,7 +289,16 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             if (!ball.canBallBeCopied)
                 ball.canBallBeCopied = true;
 
-            ball.CurrentBaseScore += 3;
+            ball.SetLeftHandBouncesToZero();
+            SetBallScore(ball);
         }
+    }
+
+    private static void SetBallScore(Ball ball)
+    {
+        if (ball.CurrentBaseScore >= 0)
+            ball.CurrentBaseScore += baseScore;
+        else
+            ball.CurrentBaseScore = baseScore;
     }
 }

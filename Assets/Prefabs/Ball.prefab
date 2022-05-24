@@ -85,6 +85,7 @@ MonoBehaviour:
   ballPrefab: {fileID: 6511289662787850301}
   copyUpwardsImpulseReductionFactor: 0.75
   currentBaseScore: 3
+  penaltyScore: -1
 --- !u!50 &6511289662787850303
 Rigidbody2D:
   serializedVersion: 4
