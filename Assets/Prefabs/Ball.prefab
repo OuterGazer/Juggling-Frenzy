@@ -86,6 +86,8 @@ MonoBehaviour:
   copyUpwardsImpulseReductionFactor: 0.75
   currentBaseScore: 3
   penaltyScore: -1
+  basicTutorial: {fileID: 0}
+  advancedTutorial: {fileID: 0}
 --- !u!50 &6511289662787850303
 Rigidbody2D:
   serializedVersion: 4

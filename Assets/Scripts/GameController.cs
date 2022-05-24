@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
     [SerializeField] TextMeshProUGUI livesText;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject gameOverWindow;
+    [SerializeField] GameObject tutorialTips;
+    [SerializeField] GameObject advTutorialTips;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI gameOverScoreText;
     [SerializeField] InputAction pauseButton;
@@ -39,6 +41,7 @@ public class GameController : MonoBehaviour
 
     //Boolean variables
     private bool isGamePaused = false;
+    public bool IsGamePaused => this.isGamePaused;
     private bool isBallLost = false;
     private bool isGameOver = false;
 
@@ -81,6 +84,9 @@ public class GameController : MonoBehaviour
             AudioListener.pause = true;
 
             MakeGameElementsDisappearOrAppear(true);
+
+            this.tutorialTips.SetActive(false);
+            this.advTutorialTips.SetActive(false);
 
             this.pauseMenu.SetActive(true);
         }

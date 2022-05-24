@@ -53,6 +53,11 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         this.leftHandBounces += 1;
     }
 
+
+    [Header("UI Tutorials")]
+    [SerializeField] GameObject basicTutorial;
+    [SerializeField] GameObject advancedTutorial;
+
     // Cached references
     private Rigidbody2D ballRB;
     private LayerMask ballMask;
@@ -61,6 +66,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private static float maxDownVertDrag;
     private static float currentZValue;
     private ScoreController scoreController;
+    private GameController gameController;
 
     // Boolean variables
     private static bool hasGameStarted = false;
@@ -72,6 +78,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         get { return this.canBallBeCopied; }
         set { this.canBallBeCopied = value; }
     }
+    private static bool hasGameProgressed = false;
 
 
     private void Awake()
@@ -79,6 +86,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         this.ballRB = this.gameObject.GetComponent<Rigidbody2D>();
         this.ballMask = LayerMask.GetMask("Ball");
         this.scoreController = GameObject.FindObjectOfType<ScoreController>();
+        this.gameController = GameObject.FindObjectOfType<GameController>();
     }
 
     private void Start()
@@ -103,7 +111,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         // We add the ball to the list for managing the score and set the base score, as current score will be changing
         this.scoreController.ManageBallList(false, this);
 
-        // First ball sets the base score fro all balls, ther est of the balls get the base score on spawn (if not they copy the current base score from the ball they spawn from)
+        // First ball sets the base score for all balls, ther est of the balls get the base score on spawn (if not they copy the current base score from the ball they spawn from)
         if (baseScore == 0)
             baseScore = this.currentBaseScore;
         else
@@ -117,6 +125,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         // Upon beginning, the first ball should be static in the center of the screen until the player clicks it.
         if (!hasGameStarted)
         {
+            ShowTutorialTips();
             KeepBallInScreenCenter();
             return;
         }
@@ -147,6 +156,22 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     {
         // We erase the ball from the score list on destroy
         this.scoreController.ManageBallList(true, this);
+    }
+
+    private void ShowTutorialTips()
+    {
+        if (this.gameController.IsGamePaused) { return; }
+
+        if (!hasGameProgressed)
+        {
+            if (!this.basicTutorial.activeInHierarchy)
+                this.basicTutorial.SetActive(true);
+        }else
+        {
+            if (!this.advancedTutorial.activeInHierarchy)
+                this.advancedTutorial.SetActive(true);
+        }
+        
     }
 
     private void KeepBallInScreenCenter()
@@ -218,7 +243,15 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             // Prevents ball from going back to the middle of the screen after clicking
             if (!hasGameStarted)
+            {
                 hasGameStarted = true;
+
+                hasGameProgressed = true;
+
+                this.basicTutorial.SetActive(false);
+                this.advancedTutorial.SetActive(false);
+            }
+                
         }       
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
