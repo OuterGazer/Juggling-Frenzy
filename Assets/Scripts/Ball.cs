@@ -143,9 +143,14 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         Ball[] totalBalls = GameObject.FindObjectsOfType<Ball>();
 
         if (totalBalls.Length < 2)
+        {
             hasGameStarted = false;
+        }            
         else
+        {
+            GameObject.FindObjectOfType<GameController>().LooseOneLife();
             GameObject.Destroy(this.gameObject);
+        }            
     }
 
     public void OnPointerDown(PointerEventData eventData)
