@@ -13,12 +13,20 @@ public class GameController : MonoBehaviour
     {
         this.playerLives += inLives;
 
+        if (this.playerLives <= 0)
+        {
+            this.playerLives = 0;
+        }
+
         this.livesText.text = $"Lives: {this.playerLives}";
     }
 
     [Header("UI Characteristics")]
     [SerializeField] TextMeshProUGUI livesText;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject gameOverWindow;
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI gameOverScoreText;
     [SerializeField] InputAction pauseButton;
     [SerializeField] InputAction restartButton;
     [SerializeField] InputAction quitButton;
@@ -32,6 +40,7 @@ public class GameController : MonoBehaviour
     //Boolean variables
     private bool isGamePaused = false;
     private bool isBallLost = false;
+    private bool isGameOver = false;
 
     private void Awake()
     {
@@ -56,11 +65,12 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (this.pauseButton.triggered)
+        if (this.pauseButton.triggered && !this.isGameOver)
             this.isGamePaused = !this.isGamePaused;
 
         ManagePauseState();
 
+        ManagePauseControls();
     }
 
     private void ManagePauseState()
@@ -77,7 +87,8 @@ public class GameController : MonoBehaviour
         else if(!this.isGamePaused && Mathf.Approximately(Time.timeScale, 0))
         {
             // This if block statement triggers when loosing a ball and it instantly sets timeScale again to 1, ruining the minipause effect.
-            if (this.isBallLost) { return; }
+            // It also triggers on game over and activates all game elements again
+            if (this.isBallLost || this.isGameOver) { return; }
 
             Time.timeScale = 1;
             AudioListener.pause = false;
@@ -85,14 +96,12 @@ public class GameController : MonoBehaviour
             MakeGameElementsDisappearOrAppear(false);
 
             this.pauseMenu.SetActive(false);
-        }
-
-        ManagePauseControls();
+        }        
     }
 
     private void ManagePauseControls()
     {
-        if (this.isGamePaused)
+        if (this.isGamePaused || this.isGameOver)
         {
             if (this.restartButton.triggered)
                 UnityEngine.SceneManagement.SceneManager.LoadScene(1);
@@ -125,19 +134,30 @@ public class GameController : MonoBehaviour
     {
         this.isBallLost = true;
         Time.timeScale = 0.0f;
-        // Play SFX
+        // Play SFX        
 
         yield return new WaitForSecondsRealtime(1.5f); // Really add the time till the sfx is done playing
 
         this.isBallLost = false;
         Time.timeScale = 1.0f;
-
+        
         if(this.playerLives <= 0)
-        {
-            this.playerLives = 0;
-            this.livesText.text = $"Lives: {this.playerLives}";
+            FinishGame();
+    }
 
-            // TODO: Set game ending logic
-        }
+    private void FinishGame()
+    {
+        this.isGameOver = true;
+
+        Time.timeScale = 0;
+        AudioListener.pause = true;
+
+        MakeGameElementsDisappearOrAppear(true);
+        this.livesText.enabled = false;
+        this.scoreText.enabled = false;
+
+        this.gameOverWindow.SetActive(true);
+
+        this.gameOverScoreText.text = this.scoreController.CurrentScore.ToString();
     }
 }

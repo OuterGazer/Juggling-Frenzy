@@ -10,6 +10,7 @@ public class ScoreController : MonoBehaviour
 
 
     private int currentScore = 0;
+    public int CurrentScore => this.currentScore;
     private List<Ball> balls;
     public List<Ball> Balls
     {
