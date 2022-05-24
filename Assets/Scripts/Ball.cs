@@ -58,6 +58,12 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     [SerializeField] GameObject basicTutorial;
     [SerializeField] GameObject advancedTutorial;
 
+
+    [Header("SFX Characteristics")]
+    [SerializeField] AudioClip clickBallSFX;
+    [SerializeField] AudioClip copyBallSFX;
+
+
     // Cached references
     private Rigidbody2D ballRB;
     private LayerMask ballMask;
@@ -67,6 +73,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     private static float currentZValue;
     private ScoreController scoreController;
     private GameController gameController;
+    private AudioSource audioSource;
+
 
     // Boolean variables
     private static bool hasGameStarted = false;
@@ -87,6 +95,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         this.ballMask = LayerMask.GetMask("Ball");
         this.scoreController = GameObject.FindObjectOfType<ScoreController>();
         this.gameController = GameObject.FindObjectOfType<GameController>();
+        this.audioSource = this.gameObject.GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -235,10 +244,12 @@ public class Ball : MonoBehaviour, IPointerDownHandler
                                                            clickPos, Mathf.Infinity, this.ballMask, -1.0f, currentZValue + 1.0f);
 
         // Safeguard against just clicking the background
-        if (ballsClicked.Length < 1) { return; }
+        if (ballsClicked.Length < 1) { return; }        
 
         if(eventData.button == PointerEventData.InputButton.Left)
         {
+            PlaySFX(this.clickBallSFX);
+
             LoopThroughClickedBalls(clickPos, ballsClicked, 0);
 
             // Prevents ball from going back to the middle of the screen after clicking
@@ -264,6 +275,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             if (this.canBallBeCopied)
                 this.canBallBeCopied = false;
 
+            PlaySFX(this.copyBallSFX);
+
             // Spawn a copy and get it's Rigidbody2D to pass it later onto the method that will apply the upwards impulse
             // Set its Z value higher than the last ball with highest value to prevent Z fighting
             Ball copyBall = GameObject.Instantiate<Ball>(this.ballPrefab,
@@ -279,6 +292,12 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             LoopThroughClickedBalls(clickPos, ballsClicked, 1);
 
         }
+    }
+
+    private void PlaySFX(AudioClip SFX)
+    {
+        this.audioSource.pitch = UnityEngine.Random.Range(0.90f, 1.1f);
+        this.audioSource.PlayOneShot(SFX);
     }
     
 
