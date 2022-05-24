@@ -11,6 +11,11 @@ public class ScoreController : MonoBehaviour
 
     private int currentScore = 0;
     private List<Ball> balls;
+    public List<Ball> Balls
+    {
+        get { return this.balls; }
+        set { this.balls = value; }
+    }
     private float gameTimeCounter = 0.0f;
 
 

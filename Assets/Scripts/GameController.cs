@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameController : MonoBehaviour
 {
@@ -17,10 +18,67 @@ public class GameController : MonoBehaviour
 
     [Header("UI Characteristics")]
     [SerializeField] TextMeshProUGUI livesText;
+    [SerializeField] InputAction pauseButton;
+    [SerializeField] GameObject pauseMenu;
+
+
+    //Cached references
+    private ScoreController scoreController;
+    private LeftHand leftHand;
+
+
+    //Boolean variables
+    private bool isGamePaused = false;
+
+    private void Awake()
+    {
+        this.pauseButton.Enable();
+        this.scoreController = GameObject.FindObjectOfType<ScoreController>();
+        this.leftHand = GameObject.FindObjectOfType<LeftHand>();
+    }
+    private void OnDestroy()
+    {
+        this.pauseButton.Disable();
+    }
 
     private void Start()
     {
         this.livesText.text = $"Lives: {this.playerLives}";
+    }
+
+    private void Update()
+    {
+        if (this.pauseButton.triggered)
+            this.isGamePaused = !this.isGamePaused;
+
+        ManagePauseState();
+
+    }
+
+    private void ManagePauseState()
+    {
+        if(this.isGamePaused && !Mathf.Approximately(Time.timeScale, 0))
+        {
+            Time.timeScale = 0;
+            AudioListener.pause = true;
+
+            this.leftHand.gameObject.SetActive(false);
+            foreach (Ball item in this.scoreController.Balls)
+                item.GetComponentInChildren<SpriteRenderer>().enabled = false;
+
+            this.pauseMenu.SetActive(true);
+        }
+        else if(!this.isGamePaused && Mathf.Approximately(Time.timeScale, 0))
+        {
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+
+            this.leftHand.gameObject.SetActive(true);
+            foreach (Ball item in this.scoreController.Balls)
+                item.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+            this.pauseMenu.SetActive(false);
+        }
     }
 
     public void LooseOneLife()
