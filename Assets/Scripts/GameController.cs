@@ -150,7 +150,7 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0.0f;
         this.audioSource.Pause();        
 
-        yield return new WaitForSecondsRealtime(1.5f); // Really add the time till the sfx is done playing
+        yield return new WaitForSecondsRealtime(0.18f); // 0.18f is the length of the audio clip
 
         this.isBallLost = false;
         Time.timeScale = 1.0f;
