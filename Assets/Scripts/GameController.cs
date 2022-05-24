@@ -140,12 +140,14 @@ public class GameController : MonoBehaviour
     {
         this.isBallLost = true;
         Time.timeScale = 0.0f;
+        AudioListener.pause = true;
         // Play SFX        
 
         yield return new WaitForSecondsRealtime(1.5f); // Really add the time till the sfx is done playing
 
         this.isBallLost = false;
         Time.timeScale = 1.0f;
+        AudioListener.pause = false;
         
         if(this.playerLives <= 0)
             FinishGame();
