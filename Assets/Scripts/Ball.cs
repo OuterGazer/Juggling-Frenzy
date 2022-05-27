@@ -135,14 +135,6 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void Update()
     {
-        // Upon beginning, the first ball should be static in the center of the screen until the player clicks it.
-        if (!hasGameStarted)
-        {
-            ShowTutorialTips();
-            KeepBallInScreenCenter();
-            return;
-        }
-
         ChangeDragOnBallVelocityDirection();
 
         // If ball falls lower than screen botton begin life subtraction/ball destruction process
@@ -153,9 +145,17 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void FixedUpdate()
     {
+        // Upon beginning, the first ball should be static in the center of the screen until the player clicks it.
+        if (!hasGameStarted)
+        {
+            ShowTutorialTips();
+            KeepBallInScreenCenter();
+            return;
+        }
+
         // Regular drag applies in all directions and prevents lateral moving of the ball
         // Here I will apply a constant vertical drag contrary to the ball's current velocity direction
-        if(Mathf.Sign(this.ballRB.velocity.y) == +1)
+        if (Mathf.Sign(this.ballRB.velocity.y) == +1)
         {
             this.ballRB.AddForce(-Vector2.up * this.upwardsVerticalDrag, ForceMode2D.Force);
         }
@@ -189,8 +189,10 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void KeepBallInScreenCenter()
     {
-        this.gameObject.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x,
-                                                         Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height / 2, 0)).y);
+        this.ballRB.position = new Vector2(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x,
+                                           Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height / 2, 0)).y);
+
+        this.ballRB.constraints = RigidbodyConstraints2D.FreezePositionY;
     }
 
     private void ChangeDragOnBallVelocityDirection()
@@ -223,7 +225,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void ProcessBallDestruction()
     {
-        // If there was only one ball, set it again in the middle and don't subtract a life, else subtract life and destroy ball
+        // If there was only one ball, set it again in the middle, reset its base score and don't subtract a life, else subtract life and destroy ball
         Ball[] totalBalls = GameObject.FindObjectsOfType<Ball>();
 
         if (totalBalls.Length < 2)
@@ -257,7 +259,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             LoopThroughClickedBalls(clickPos, ballsClicked, 0);
 
-            // Prevents ball from going back to the middle of the screen after clicking
+            // Prevents ball from going back to the middle of the screen after clicking, else put necesary code in place to be able to play the game
             if (!hasGameStarted)
             {
                 hasGameStarted = true;
@@ -266,6 +268,9 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
                 this.basicTutorial.SetActive(false);
                 this.advancedTutorial.SetActive(false);
+
+                this.ballRB.constraints = RigidbodyConstraints2D.None;
+                this.ballRB.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
                 
         }       
