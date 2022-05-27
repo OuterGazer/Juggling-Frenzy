@@ -526,8 +526,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 176.70474, y: -40}
-  m_SizeDelta: {x: 357.7142, y: 89.269}
+  m_AnchoredPosition: {x: 150.13829, y: -40}
+  m_SizeDelta: {x: 304.5813, y: 89.269}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &128591358
 MonoBehaviour:
@@ -903,8 +903,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 166, y: 40}
-  m_SizeDelta: {x: 373.03, y: 114.5382}
+  m_AnchoredPosition: {x: 142, y: -23}
+  m_SizeDelta: {x: 280.0474, y: 114.5382}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &314154533
 MonoBehaviour:
@@ -2240,8 +2240,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 664.36475, y: 120.03}
-  m_SizeDelta: {x: 342.5228, y: 294.7249}
+  m_AnchoredPosition: {x: 682, y: 120.03}
+  m_SizeDelta: {x: 340.8624, y: 294.7249}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1050816777
 MonoBehaviour:
@@ -2607,8 +2607,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 176.70474, y: 65}
-  m_SizeDelta: {x: 357.7142, y: 89.269}
+  m_AnchoredPosition: {x: 172.55373, y: 65}
+  m_SizeDelta: {x: 349.4121, y: 89.269}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1373064659
 MonoBehaviour:
@@ -2741,8 +2741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 166, y: 168}
-  m_SizeDelta: {x: 373.0273, y: 114.5382}
+  m_AnchoredPosition: {x: 131.74998, y: 110}
+  m_SizeDelta: {x: 300.56, y: 114.5382}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1408064945
 MonoBehaviour:
@@ -3552,10 +3552,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
-      propertyPath: ballBounceSFX
-      value: 
-      objectReference: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
     - target: {fileID: 6511289662787850301, guid: 554149edbaff2464daa0e9d2e24afd2e, type: 3}
       propertyPath: basicTutorial
       value: 

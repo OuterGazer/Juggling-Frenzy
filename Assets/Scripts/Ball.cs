@@ -90,6 +90,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         set { this.canBallBeCopied = value; }
     }
     private static bool hasGameProgressed = false;
+    private static bool hasBumpedStackedBalls = false;
 
 
     private void Awake()
@@ -338,6 +339,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     {
         for (int i = startBall; i < ballsClicked.Length; i++)
         {
+            if (ballsClicked.Length > 1 && hasBumpedStackedBalls) { return; }
+            
             Rigidbody2D ballRB = ballsClicked[i].rigidbody;
             AddUpwardsImpulse(false, ballRB, clickPos);
 
@@ -348,8 +351,14 @@ public class Ball : MonoBehaviour, IPointerDownHandler
             ball.SetLeftHandBouncesToZero();
             SetBallScore(ball);
 
-            if (i <= this.maxStackedBallsToBump)
+            // If we have bumped upwards many balls stacked on top of each other, prevent players from doing it again until they click a single ball.
+            // This is to avoid degenerate strategies that quickly click left and right at a ball's deadpoint to spawn near infinite balls.
+            if (i >= this.maxStackedBallsToBump)
+            {
+                hasBumpedStackedBalls = true;
                 break;
+            }else
+                hasBumpedStackedBalls = false;
         }
     }
 
