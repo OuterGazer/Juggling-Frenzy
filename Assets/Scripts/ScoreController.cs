@@ -45,7 +45,8 @@ public class ScoreController : MonoBehaviour
 
         this.gameTimeCounter += Time.deltaTime;
 
-        if(this.gameTimeCounter >= this.scoreCountTick)
+        if((this.gameTimeCounter >= this.scoreCountTick) &&
+            (this.balls.Count > 1))
         {
             AddScore();
             this.gameTimeCounter = 0.0f;

@@ -83,6 +83,7 @@ MonoBehaviour:
   downwardsVerticalDrag: 4.25
   upwardsDragApplicationSpeedFactor: 4
   downwardsDragApplicationSpeedFactor: 5.7
+  maxStackedBallsToBump: 3
   ballPrefab: {fileID: 6511289662787850301}
   copyUpwardsImpulseReductionFactor: 0.75
   currentBaseScore: 3
@@ -91,6 +92,7 @@ MonoBehaviour:
   advancedTutorial: {fileID: 0}
   clickBallSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   copyBallSFX: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+  ballBounceSFX: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
 --- !u!50 &6511289662787850303
 Rigidbody2D:
   serializedVersion: 4

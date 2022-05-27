@@ -228,6 +228,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
         if (totalBalls.Length < 2)
         {
             hasGameStarted = false;
+            this.currentBaseScore = baseScore;
         }            
         else
         {
@@ -335,7 +336,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void LoopThroughClickedBalls(Vector2 clickPos, RaycastHit2D[] ballsClicked, int startBall)
     {
-        for (int i = startBall; i < this.maxStackedBallsToBump; i++)
+        for (int i = startBall; i < ballsClicked.Length; i++)
         {
             Rigidbody2D ballRB = ballsClicked[i].rigidbody;
             AddUpwardsImpulse(false, ballRB, clickPos);
@@ -346,6 +347,9 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             ball.SetLeftHandBouncesToZero();
             SetBallScore(ball);
+
+            if (i <= this.maxStackedBallsToBump)
+                break;
         }
     }
 
