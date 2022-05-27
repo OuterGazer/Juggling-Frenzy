@@ -21,6 +21,8 @@ public class Ball : MonoBehaviour, IPointerDownHandler
     [SerializeField] float upwardsDragApplicationSpeedFactor = default;
     [Tooltip("This is the speed in which downwards drag is increased as the ball goes up to dampen it's upwards velocity")]
     [SerializeField] float downwardsDragApplicationSpeedFactor = default;
+    [Tooltip("The maximum amount of balls that will be boosted up after left clicking when there are manu stacked up on top of each other")]
+    [SerializeField] int maxStackedBallsToBump = default;
 
     [Header("New Ball Creation Characteristics")]
     [Tooltip("Link to ball prefab to spawn copies of it on right click")]
@@ -289,7 +291,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
             SetBallScore(this);
 
-            // We finally boost upwards the rest of the balls after giving impulse tot he first one and the copy
+            // We finally boost upwards the rest of the balls after giving impulse to the first one and the copy
             LoopThroughClickedBalls(clickPos, ballsClicked, 1);
 
         }
@@ -333,7 +335,7 @@ public class Ball : MonoBehaviour, IPointerDownHandler
 
     private void LoopThroughClickedBalls(Vector2 clickPos, RaycastHit2D[] ballsClicked, int startBall)
     {
-        for (int i = startBall; i < ballsClicked.Length; i++)
+        for (int i = startBall; i < this.maxStackedBallsToBump; i++)
         {
             Rigidbody2D ballRB = ballsClicked[i].rigidbody;
             AddUpwardsImpulse(false, ballRB, clickPos);
