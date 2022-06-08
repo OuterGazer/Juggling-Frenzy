@@ -23,7 +23,7 @@ This game showcases simplistic UI, aesthetics and mechanics to try to prove that
 
 - The physics of the balls have nuance to them. Depending on where you click them, they can go slightly to the sides.
 - Depending on where on the Y-axis of the screen you click the ball, proportional upwards force is applied to try and keep always the ball on screen. Clicking higher up the screen adds little force whereas clicking lower on the screen adds a stronger force.
-- A color palette resembling that of a circus was chosen to give the game a lighthearted, happy feeling to it. Some post-processing effects like AA, vignette nad grain were subtly used to enhance this feeling.
+- A color palette resembling that of a circus was chosen to give the game a lighthearted, happy feeling to it. Some post-processing effects like AA, vignette and grain were subtly used to enhance this feeling.
 - The music and sound effects were chosen to fit the previously mentioned atmosphere.
 
 
